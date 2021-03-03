@@ -1,0 +1,35 @@
+.container
+    background-color: #fff
+    &--max-width
+        padding: 20px 32px 0px 16px
+        width: 100%
+        &:last-child
+            padding-bottom: 20px
+    &--fill-height
+        margin: 0 auto
+        max-width: 1010px
+
+.status
+    grid-column-start: 1
+    grid-column-end: -1
+    margin: 0 auto
+    min-width: 100px
+    width: 100%
+    min-height: 100px
+    height: 200px
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15)
+    display: flex
+    align-items: center
+    justify-content: center
+    &--margin-bottom
+        margin-bottom: 20px
+
+@media screen and (min-width: 1010px)
+    .container
+        &--max-width
+            padding: 20px 70px 0px 32px
+            display: grid
+            grid-template-columns: 50% 50%
+            column-gap: 36px
+            &:last-child
+                padding-bottom: 20px
