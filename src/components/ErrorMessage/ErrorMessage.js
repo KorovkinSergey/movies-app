@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 function ErrorMessage({error}) {
 	return (
 		<div className="status status--margin-bottom">
-			<Alert message={`Something goes wrong :(    Error: ${error}`} type="error"/>
+			<Alert message={`Something goes wrong :(  ${error}`} type="error"/>
 		</div>
 	)
 }

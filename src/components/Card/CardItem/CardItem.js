@@ -28,8 +28,9 @@ function CardItem({title, releaseDate, genresIds, coverPath, description, id, my
 		console.log(`no release date for film: ${title}`)
 	}
 
-	const genresToRender = genres => {
-		const movieGenres = genres.genres.filter(genreObj => genresIds.includes(genreObj.id, 0))
+	const genresToRender = ({genres}) => {
+
+		const movieGenres = genres.filter(genreObj => genresIds.includes(genreObj.id, 0))
 
 		return movieGenres.map((genre) => (
 			<Text keyboard key={genre.name}>
@@ -50,7 +51,7 @@ function CardItem({title, releaseDate, genresIds, coverPath, description, id, my
 
 						{posterUrl && (<img className="card__img" src={posterUrl} alt="film cover"/>)}
 
-						{!posterUrl && (<span className="card__img card__img--no-data">&#10067</span>)}
+						{!posterUrl && (<span className="card__img card__img--no-data">&#10067;</span>)}
 
 					</div>
 

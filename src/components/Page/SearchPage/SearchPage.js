@@ -2,10 +2,10 @@ import React, {useState} from "react"
 import PropTypes from "prop-types"
 
 import {Input, Pagination} from "antd"
-import LoadingMessage from "../../components/LoadingMessage"
-import CardList from "../../components/Card/CardList"
-import NoResultMessage from "../../components/NoResultMessage"
-import ErrorMessage from "../../components/ErrorMessage"
+import LoadingMessage from "../../LoadingMessage"
+import CardList from "../../Card/CardList"
+import NoResultMessage from "../../NoResultMessage"
+import ErrorMessage from "../../ErrorMessage"
 
 import "./SearchPage.scss"
 

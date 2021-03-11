@@ -15,9 +15,7 @@ class MovieService {
 			if (options && typeof options === "object") result = await fetch(url, options)
 
 			if (!result.ok) throw new Error(`Error code is: ${result.status}`)
-
 			const body = await result.json()
-
 			return body
 
 		} catch (e) {
@@ -50,6 +48,7 @@ class MovieService {
 	}
 
 	async rateMovie(id, value) {
+
 		const url = `${this.apiBase}movie/${id}/rating${this.apiKey}&guest_session_id=${this.guestSessionId}`
 		const options = {
 			method: "POST",
@@ -73,8 +72,8 @@ class MovieService {
 		}
 	}
 
-	async getRatedMovies() {
-		const url = `${this.apiBase}guest_session/${this.guestSessionId}/rated/movies${this.apiKey}`
+	async getRatedMovies(page) {
+		const url = `${this.apiBase}guest_session/${this.guestSessionId}/rated/movies${this.apiKey}&page=${page}`
 		try {
 			const ratedMovies = await this.getResourse(url)
 			return ratedMovies

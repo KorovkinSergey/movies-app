@@ -2,8 +2,8 @@ import React, {Component} from "react"
 import debounce from "lodash.debounce"
 import {Tabs} from "antd"
 
-import SearchPage from "./Page/SearchPage"
-import RatedPage from "./Page/RatedPage"
+import SearchPage from "./components/Page/SearchPage"
+import RatedPage from "./components/Page/RatedPage"
 
 import movieService from "./API/MovieService"
 import updateGuestSession from "./functionHelpers/updateGuestSession"
@@ -14,19 +14,19 @@ import "./App.sass"
 class App extends Component {
 
 	state = {
-		searchQuery: "return",
+		searchQuery: "a",
 		movies: [],
 		ratedMovies: [],
 		currentPage: 1,
+		currentRatedPage: 1,
 		loading: true,
 		error: false, //	error.message == string
 		totalItems: 0,
+		totalRatedItems: 0,
 	}
 
 
-	debounceUpdateMovie = debounce((text, page) => {
-		this.updateMovies(text, page)
-	}, 1000)
+	debounceUpdateMovie = debounce((text, page) => this.updateMovies(text, page), 1000)
 
 	componentDidMount() {
 		const {searchQuery, currentPage} = this.state
@@ -44,9 +44,9 @@ class App extends Component {
 		this.setError(e)
 	}
 
-	setRatedMoviesToState() {
-		movieService.getRatedMovies().then((ratedMovies) => {
-			if (ratedMovies) this.setState({ratedMovies: ratedMovies.results,})
+	setRatedMoviesToState(page) {
+		movieService.getRatedMovies(page).then((ratedMovies) => {
+			if (ratedMovies) this.setState({ratedMovies: ratedMovies.results, totalRatedItems: ratedMovies.total_results})
 		})
 	}
 
@@ -63,7 +63,7 @@ class App extends Component {
 					movies: data.results,
 					totalItems: data.total_results,
 					currentPage: data.page,
-					loading: false,
+					loading: false
 				})
 			})
 			.catch((e) => {
@@ -86,8 +86,23 @@ class App extends Component {
 		this.updateMovies(searchQuery, newPage)
 	}
 
+	changeCurrentRatedPage(newPage) {
+		this.setState({currentRatedPage: newPage})
+		this.setRatedMoviesToState(newPage)
+	}
+
+
 	render() {
-		const {movies, ratedMovies, totalItems, error, loading, searchQuery} = this.state
+		const {
+			movies,
+			ratedMovies,
+			totalItems,
+			error,
+			loading,
+			searchQuery,
+			currentRatedPage,
+			totalRatedItems
+		} = this.state
 
 		const {TabPane} = Tabs
 
@@ -100,7 +115,7 @@ class App extends Component {
 						defaultActiveKey="1"
 						centered
 						onChange={(key) => {
-							if (key === "2") this.setRatedMoviesToState()
+							if (key === "2") this.setRatedMoviesToState(currentRatedPage)
 						}}>
 						<TabPane tab="Search" key="1">
 							<SearchPage
@@ -113,9 +128,7 @@ class App extends Component {
 								ratedMovies={ratedMovies}
 								error={error}
 								searchQuery={searchQuery}
-								changeCurrentPage={(newPage) => {
-									this.changeCurrentPage(newPage)
-								}}
+								changeCurrentPage={(newPage) => this.changeCurrentPage(newPage)}
 								totalItems={totalItems}
 							/>
 						</TabPane>
@@ -124,6 +137,8 @@ class App extends Component {
 								loading={loading}
 								ratedMovies={ratedMovies}
 								error={error}
+								changeCurrentRatedPage={newPage => this.changeCurrentRatedPage(newPage)}
+								totalItems={totalRatedItems}
 							/>
 						</TabPane>
 					</Tabs>
