@@ -100,6 +100,7 @@ class App extends Component {
 			error,
 			loading,
 			searchQuery,
+			currentPage,
 			currentRatedPage,
 			totalRatedItems
 		} = this.state
@@ -115,6 +116,7 @@ class App extends Component {
 						defaultActiveKey="1"
 						centered
 						onChange={(key) => {
+							if(key === "1") this.updateMovies(searchQuery,currentPage)
 							if (key === "2") this.setRatedMoviesToState(currentRatedPage)
 						}}>
 						<TabPane tab="Search" key="1">
