@@ -46,7 +46,15 @@ class App extends Component {
 
 	setRatedMoviesToState(page) {
 		movieService.getRatedMovies(page).then((ratedMovies) => {
-			if (ratedMovies) this.setState({ratedMovies: ratedMovies.results, totalRatedItems: ratedMovies.total_results})
+			if (ratedMovies) {
+				this.setState(prev => {
+					const addRated = ratedMovies.results.filter(item => !prev.ratedMovies.find(el => el.id === item.id))
+					return {
+						ratedMovies: [...prev.ratedMovies, ...addRated],
+						totalRatedItems: ratedMovies.total_results
+					}
+				})
+			}
 		})
 	}
 
@@ -83,6 +91,7 @@ class App extends Component {
 
 	changeCurrentPage(newPage) {
 		const {searchQuery} = this.state
+		this.setRatedMoviesToState(newPage)
 		this.updateMovies(searchQuery, newPage)
 	}
 
@@ -91,6 +100,14 @@ class App extends Component {
 		this.setRatedMoviesToState(newPage)
 	}
 
+	myRateMovie(id, value) {
+		const {currentRatedPage} = this.state
+		movieService.rateMovie(id, value).then(() => {
+			setTimeout(() => {
+				this.setRatedMoviesToState(currentRatedPage)
+			}, 700)
+		})
+	}
 
 	render() {
 		const {
@@ -110,13 +127,13 @@ class App extends Component {
 		const haveResult = !!movies.length
 
 		return (
-			<Context.Provider value={{movieService, genres: this.genres}}>
+			<Context.Provider value={{movieService, genres: this.genres, myRateMovie: this.myRateMovie.bind(this)}}>
 				<div className="container container--fill-height">
 					<Tabs
 						defaultActiveKey="1"
 						centered
 						onChange={(key) => {
-							if(key === "1") this.updateMovies(searchQuery,currentPage)
+							if (key === "1") this.updateMovies(searchQuery, currentPage)
 							if (key === "2") this.setRatedMoviesToState(currentRatedPage)
 						}}>
 						<TabPane tab="Search" key="1">
@@ -130,8 +147,9 @@ class App extends Component {
 								ratedMovies={ratedMovies}
 								error={error}
 								searchQuery={searchQuery}
-								changeCurrentPage={(newPage) => this.changeCurrentPage(newPage)}
+								changeCurrentPage={newPage => this.changeCurrentPage(newPage)}
 								totalItems={totalItems}
+
 							/>
 						</TabPane>
 						<TabPane tab="Rated" key="2">

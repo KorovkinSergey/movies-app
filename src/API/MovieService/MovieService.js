@@ -48,7 +48,6 @@ class MovieService {
 	}
 
 	async rateMovie(id, value) {
-
 		const url = `${this.apiBase}movie/${id}/rating${this.apiKey}&guest_session_id=${this.guestSessionId}`
 		const options = {
 			method: "POST",
@@ -60,7 +59,7 @@ class MovieService {
 			},
 		}
 		try {
-			await this.getResourse(url, options)
+			 await this.getResourse(url, options)
 		} catch (e) {
 
 			const errorCode = +e.message.slice(-3)
@@ -75,8 +74,7 @@ class MovieService {
 	async getRatedMovies(page) {
 		const url = `${this.apiBase}guest_session/${this.guestSessionId}/rated/movies${this.apiKey}&page=${page}`
 		try {
-			const ratedMovies = await this.getResourse(url)
-			return ratedMovies
+			return await this.getResourse(url)
 		} catch (e) {
 			const errorCode = +e.message.slice(-3)
 			if (errorCode === 401) {

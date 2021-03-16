@@ -10,6 +10,7 @@ import "./CardItem.sass"
 import AverageRating from "../AverageRating"
 
 function CardItem({title, releaseDate, genresIds, coverPath, description, id, myRating, averageRating}) {
+
 	const { Title, Text } = Typography
 
 	let textLength = 280
@@ -45,7 +46,7 @@ function CardItem({title, releaseDate, genresIds, coverPath, description, id, my
 
 	return (
 		<Context.Consumer>
-			{({ movieService, genres }) => (
+			{({ genres, myRateMovie }) => (
 				<div className="card card--margin-bottom">
 					<div className="card__img-wrapper">
 
@@ -78,8 +79,9 @@ function CardItem({title, releaseDate, genresIds, coverPath, description, id, my
 					<Rate
 						className="rating rating--margin"
 						defaultValue={myRating}
+
 						count={10}
-						onChange={(value) => {movieService.rateMovie(id, value)}}
+						onChange={(value) => {myRateMovie(id, value)}}
 					/>
 
 					<AverageRating averageRating={averageRating} />
