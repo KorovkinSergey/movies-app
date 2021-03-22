@@ -3,9 +3,7 @@ import movieService from "../../API/MovieService"
 async function updateGuestSession() {
 	let result = null
 	if (sessionStorage.getItem("guestSessionId")) {
-		result = movieService.setGuestSessionId(
-			sessionStorage.getItem("guestSessionId")
-		)
+		result = movieService.setGuestSessionId(sessionStorage.getItem("guestSessionId"))
 		result = true
 	}
 

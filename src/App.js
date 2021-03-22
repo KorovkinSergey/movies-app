@@ -29,14 +29,17 @@ class App extends Component {
 	debounceUpdateMovie = debounce((text, page) => this.updateMovies(text, page), 1000)
 
 	componentDidMount() {
-		const {searchQuery, currentPage} = this.state
+		const {searchQuery, currentPage,currentRatedPage} = this.state
 		this.setState({loading: true})
 
 		movieService.getGenres().then((genres) => {
 			this.genres = genres
 		})
 
-		if (updateGuestSession()) this.updateMovies(searchQuery, currentPage)
+		if (updateGuestSession()) {
+			this.updateMovies(searchQuery, currentPage)
+			this.setRatedMoviesToState(currentRatedPage)
+		}
 
 	}
 
