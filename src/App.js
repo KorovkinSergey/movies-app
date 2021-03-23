@@ -38,7 +38,10 @@ class App extends Component {
 
 		if (updateGuestSession()) {
 			this.setRatedMoviesToState(currentRatedPage)
-			this.updateMovies(searchQuery, currentPage)
+
+			setTimeout(() => {
+				this.updateMovies(searchQuery, currentPage)
+			}, 300)
 		}
 
 	}
