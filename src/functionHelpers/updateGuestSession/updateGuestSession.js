@@ -6,7 +6,6 @@ async function updateGuestSession() {
 		result = movieService.setGuestSessionId(sessionStorage.getItem("guestSessionId"))
 		result = true
 	}
-
 	if (!sessionStorage.getItem("guestSessionId")) {
 		try {
 			result = await movieService.createNewGuestSession()

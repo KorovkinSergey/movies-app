@@ -37,8 +37,8 @@ class App extends Component {
 		})
 
 		if (updateGuestSession()) {
-			this.updateMovies(searchQuery, currentPage)
 			this.setRatedMoviesToState(currentRatedPage)
+			this.updateMovies(searchQuery, currentPage)
 		}
 
 	}
